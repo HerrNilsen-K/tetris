@@ -16,7 +16,7 @@ int main() {
      *      end when game over
      */
 
-    app game;
+    app game{};
     game.run();
     return 0;
 }

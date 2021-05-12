@@ -15,13 +15,13 @@ private:
     //Main loop
     bool appLoop();
 
+    bool init();
+
 
     events currentEvent;
 
 public:
     bool run();
-
-    bool init();
 };
 
 bool app::run() {
@@ -35,6 +35,7 @@ bool app::appLoop() {
     currentEvent = events::CHOOSE_PIECE;
     bool appIsRunning = true, appIsOk = true;
 
+    //Delta time
     double deltaTime = 1;
     auto oldTime = std::chrono::system_clock::now();
     auto currentTime = std::chrono::system_clock::now();
@@ -44,6 +45,7 @@ bool app::appLoop() {
         currentTime = std::chrono::system_clock::now();
         deltaTime = std::chrono::duration<double, std::milli>(currentTime - oldTime).count();
         std::cout << "FPS: " << 1000 / deltaTime << std::endl;
+        //Event handler
         switch (currentEvent) {
             case events::CLOSE:
                 appIsRunning = false;
@@ -67,6 +69,8 @@ bool app::appLoop() {
 }
 
 bool app::init() {
+    if(!glfwInit())
+        return false;
     return true;
 }
 

@@ -35,27 +35,29 @@ private:
     void destroyWindow();
 
 public:
-    explicit window(windowAttributes attributes);
+    window() = default;
+
+    void windowAttributes(windowAttributes attributes);
 
     void createWindow();
 
     void closeWindow();
 
-    bool startWindowLoop(std::function<bool()> (func)());
+    void swapBuffers();
+
+    bool run();
 
     ~window();
 
+    void pollEvents();
 };
-
-window::window(windowAttributes attributes) {
-    m_attributes = attributes;
-}
 
 void window::createWindow() {
     m_win.reset(glfwCreateWindow(m_attributes.sizeX, m_attributes.sizeY,
                                  m_attributes.name.c_str(),
                                  nullptr, nullptr));
     glfwMakeContextCurrent(m_win.get());
+    glfwSwapInterval(GLFW_FALSE);
 }
 
 void window::closeWindow() {
@@ -73,16 +75,20 @@ void window::destroyWindow() {
     glfwDestroyWindow(m_win.get());
 }
 
-bool window::startWindowLoop(std::function<bool()> (func)()) {
-    glfwMakeContextCurrent(m_win.get());
+void window::windowAttributes(struct windowAttributes attributes) {
+    m_attributes = attributes;
+}
 
-    while (glfwWindowShouldClose(m_win.get())) {
-        glfwSwapBuffers(m_win.get());
-        if (!func())
-            return false;
-        glfwPollEvents();
-    }
-    return true;
+bool window::run() {
+    return !glfwWindowShouldClose(m_win.get());
+}
+
+void window::swapBuffers() {
+    glfwSwapBuffers(m_win.get());
+}
+
+void window::pollEvents() {
+    glfwPollEvents();
 }
 
 #endif //TETRIS_WINDOW_HPP

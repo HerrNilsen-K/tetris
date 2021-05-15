@@ -6,6 +6,7 @@
 #define TETRIS_APP_HPP
 
 #include "events.hpp"
+#include "window/window.hpp"
 #include <chrono>
 #include <iostream>
 #include <thread>
@@ -19,6 +20,7 @@ private:
 
 
     events currentEvent;
+    window m_win;
 
 public:
     bool run();
@@ -40,7 +42,9 @@ bool app::appLoop() {
     auto oldTime = std::chrono::system_clock::now();
     auto currentTime = std::chrono::system_clock::now();
 
-    while (appIsRunning) {
+    while (m_win.run()) {
+        m_win.swapBuffers();
+        m_win.pollEvents();
         oldTime = currentTime;
         currentTime = std::chrono::system_clock::now();
         deltaTime = std::chrono::duration<double, std::milli>(currentTime - oldTime).count();
@@ -69,8 +73,11 @@ bool app::appLoop() {
 }
 
 bool app::init() {
-    if(!glfwInit())
+    if (!glfwInit())
         return false;
+    windowAttributes winAtt{200, 400, 0, 0, "TETRIS"};
+    m_win.windowAttributes(winAtt);
+    m_win.createWindow();
     return true;
 }
 

@@ -68,7 +68,8 @@ void window::closeWindow() {
 }
 
 window::~window() {
-    destroyWindow();
+    m_win.reset(nullptr);
+    glfwTerminate();
 }
 
 void window::destroyWindow() {

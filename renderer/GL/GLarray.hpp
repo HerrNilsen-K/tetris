@@ -14,7 +14,7 @@ public:
     void bind();
 
     //Uses float
-    void data(uint32_t start, uint32_t end, uint32_t offset);
+    void data(uint32_t start, uint32_t end, uint32_t elements, void *offset);
 
     void enable(uint8_t index);
 
@@ -32,9 +32,9 @@ void GLarray::bind() {
     glBindVertexArray(m_array);
 }
 
-void GLarray::data(uint32_t start, uint32_t end, uint32_t offset) {
+void GLarray::data(uint32_t start, uint32_t end, uint32_t elements, void *offset) {
     bind();
-    glVertexAttribPointer(start, end, GL_FLOAT, false, end * sizeof(float), offset);
+    glVertexAttribPointer(start, end, GL_FLOAT, false, elements * sizeof(float), offset);
 }
 
 void GLarray::enable(uint8_t index) {

@@ -21,9 +21,13 @@ public:
 
     ~GLbuffer();
 
+    uint32_t getIndicies() const;
+
 private:
     uint32_t m_buffer = 0;
     uint32_t m_elementBuffer = 0;
+
+    uint32_t m_indicieCount = 0;
 };
 
 GLbuffer::GLbuffer() {
@@ -33,7 +37,7 @@ GLbuffer::GLbuffer() {
 }
 
 void GLbuffer::bindBuffer() const {
-    glBindBuffer(GL_VERTEX_ARRAY, m_buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
 }
 
 void GLbuffer::bindEbuffer() const {
@@ -42,15 +46,20 @@ void GLbuffer::bindEbuffer() const {
 
 void GLbuffer::data(std::vector<float> &data, std::vector<unsigned> &indicies) {
     bindBuffer();
-    glBufferData(GL_ARRAY_BUFFER, data.size(), data.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), data.data(), GL_STATIC_DRAW);
     bindEbuffer();
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies.size(), indicies.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies.size() * sizeof(unsigned), indicies.data(), GL_STATIC_DRAW);
+    m_indicieCount = indicies.size();
+}
+
+uint32_t GLbuffer::getIndicies() const {
+    return m_indicieCount;
 }
 
 GLbuffer::~GLbuffer() {
     glDeleteBuffers(1, &m_buffer);
     glDeleteBuffers(1, &m_elementBuffer);
-    glBindBuffer(GL_VERTEX_ARRAY, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 

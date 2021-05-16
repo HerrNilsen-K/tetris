@@ -28,9 +28,10 @@ GLshader::GLshader() {
 
 std::string GLshader::shader(std::string_view &vert, std::string_view &frag) {
     size_t vertex = glCreateShader(GL_VERTEX_SHADER), fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    size_t success = 0;
+    GLint success = 0;
 
-    glShaderSource(vertex, 1, &vert.data(), nullptr);
+    const char *temp = vert.data();
+    glShaderSource(vertex, 1, &temp, nullptr);
     glCompileShader(vertex);
     glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
     if (!success) {
@@ -39,7 +40,8 @@ std::string GLshader::shader(std::string_view &vert, std::string_view &frag) {
         return std::string(stackInfo);
     }
 
-    glShaderSource(fragment, 1, &fragment.data(), nullptr);
+    temp = frag.data();
+    glShaderSource(fragment, 1, &temp, nullptr);
     glCompileShader(fragment);
     glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
     if (!success) {
@@ -72,7 +74,7 @@ void GLshader::bind() {
 }
 
 GLshader::~GLshader() {
-    glDeleteProgram(uint32_t);
+    glDeleteProgram(m_program);
 }
 
 #endif //TETRIS_GLSHADER_HPP

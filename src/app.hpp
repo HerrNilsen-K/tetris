@@ -205,6 +205,8 @@ bool app::appLoop() {
                 appIsRunning = false;
                 break;
         }
+        //render();
+        //Pull event
     }
 
     return appIsOk;

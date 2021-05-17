@@ -7,6 +7,7 @@
 
 #include <GL/glew.h>
 #include <string_view>
+#include <glm/glm.hpp>
 
 class GLshader {
 public:
@@ -15,6 +16,8 @@ public:
     std::string shader(std::string_view &vert, std::string_view &frag);
 
     void bind();
+
+    void uniform(std::string &pos, glm::mat4 &m);
 
     ~GLshader();
 
@@ -75,6 +78,11 @@ void GLshader::bind() {
 
 GLshader::~GLshader() {
     glDeleteProgram(m_program);
+}
+
+void GLshader::uniform(std::string &pos, glm::mat4 &m) {
+    bind();
+    glUniformMatrix4fv(glGetUniformLocation(m_program, pos.c_str()), 1, false, &m[0][0]);
 }
 
 #endif //TETRIS_GLSHADER_HPP

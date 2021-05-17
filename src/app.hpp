@@ -10,6 +10,7 @@
 #include "renderer/GL/GLrenderer.hpp"
 #include <chrono>
 #include <iostream>
+#include <glm/gtc/matrix_transform.hpp>
 
 class app {
 private:
@@ -153,9 +154,10 @@ bool app::appLoop() {
     std::string_view vertex{
             "#version 330 core\n"
             "layout (location = 0) in vec3 aPos;\n"
+            "uniform mat4 aMat;\n"
             "void main()\n"
             "{\n"
-            "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+            "   gl_Position = aMat * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
             "}\n"
     };
 
@@ -170,6 +172,11 @@ bool app::appLoop() {
     std::string programResult = program.shader(vertex, fragment);
     if (!programResult.empty())
         throw std::runtime_error(programResult);
+
+    glm::mat4 mat(1.0f);
+    mat = glm::rotate(mat, glm::radians(90.f), glm::vec3(0, 0, 1));
+    std::string pos = "aMat";
+    program.uniform(pos, mat);
 
     while (m_win.run()) {
         m_win.swapBuffers();

@@ -5,7 +5,7 @@
 #ifndef TETRIS_APP_HPP
 #define TETRIS_APP_HPP
 
-#include "events.hpp"
+#include "logic/events.hpp"
 #include "window/window.hpp"
 #include "renderer/GL/GLrenderer.hpp"
 #include "renderer/field.hpp"

@@ -8,6 +8,7 @@
 #include "events.hpp"
 #include "window/window.hpp"
 #include "renderer/GL/GLrenderer.hpp"
+#include "renderer/field.hpp"
 #include <chrono>
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
@@ -131,58 +132,20 @@ bool app::appLoop() {
     auto oldTime = std::chrono::system_clock::now();
     auto currentTime = std::chrono::system_clock::now();
 
-    //Testing the renderer
-    std::vector<float> vertecies{
-            0, 0.5,
-            0.5, -0.5,
-            -0.5, -0.5
-    };
-
-    std::vector<unsigned> indicies{
-            0, 1, 2
-    };
-
-    std::string_view
-            fragment{
-            "#version 330 core\n"
-            "out vec4 FragColor;\n"
-            "void main()\n"
-            "{\n"
-            "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-            "}\n"
-    };
-    std::string_view vertex{
-            "#version 330 core\n"
-            "layout (location = 0) in vec3 aPos;\n"
-            "uniform mat4 aMat;\n"
-            "void main()\n"
-            "{\n"
-            "   gl_Position = aMat * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-            "}\n"
-    };
-
-    GLbuffer vbo;
-    GLarray vao;
-    GLshader program;
-
-    vbo.data(vertecies, indicies);
-    vao.data(0, 2, 2, 0);
-    vao.enable(0);
-
-    std::string programResult = program.shader(vertex, fragment);
-    if (!programResult.empty())
-        throw std::runtime_error(programResult);
-
-    glm::mat4 mat(1.0f);
-    mat = glm::rotate(mat, glm::radians(90.f), glm::vec3(0, 0, 1));
+    glm::mat4 rot(1.0f);
+    rot = glm::scale(rot, glm::vec3(0.5, 0.5, 0.5));
+    glm::mat4 trans;
+    trans = glm::translate(rot, glm::vec3(-1, 0, 0));
     std::string pos = "aMat";
-    program.uniform(pos, mat);
+    glm::mat4 mat = trans * rot ;
 
+    field m_field;
+    m_field.uniform(pos, mat);
     while (m_win.run()) {
         m_win.swapBuffers();
         m_win.pollEvents();
         glClear(GL_COLOR_BUFFER_BIT);
-        GLrenderer::render2D(vbo, vao, program);
+        m_field.render();
         oldTime = currentTime;
         currentTime = std::chrono::system_clock::now();
         deltaTime = std::chrono::duration<double, std::milli>(currentTime - oldTime).count();

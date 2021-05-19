@@ -30,21 +30,21 @@ private:
     uint32_t m_indicieCount = 0;
 };
 
-GLbuffer::GLbuffer() {
+inline GLbuffer::GLbuffer() {
     glGenBuffers(1, &m_buffer);
     glGenBuffers(1, &m_elementBuffer);
 
 }
 
-void GLbuffer::bindBuffer() const {
+inline void GLbuffer::bindBuffer() const {
     glBindBuffer(GL_ARRAY_BUFFER, m_buffer);
 }
 
-void GLbuffer::bindEbuffer() const {
+inline void GLbuffer::bindEbuffer() const {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_elementBuffer);
 }
 
-void GLbuffer::data(std::vector<float> &data, std::vector<unsigned> &indicies) {
+inline void GLbuffer::data(std::vector<float> &data, std::vector<unsigned> &indicies) {
     bindBuffer();
     glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), data.data(), GL_STATIC_DRAW);
     bindEbuffer();
@@ -52,11 +52,11 @@ void GLbuffer::data(std::vector<float> &data, std::vector<unsigned> &indicies) {
     m_indicieCount = indicies.size();
 }
 
-uint32_t GLbuffer::getIndicies() const {
+inline uint32_t GLbuffer::getIndicies() const {
     return m_indicieCount;
 }
 
-GLbuffer::~GLbuffer() {
+inline GLbuffer::~GLbuffer() {
     glDeleteBuffers(1, &m_buffer);
     glDeleteBuffers(1, &m_elementBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

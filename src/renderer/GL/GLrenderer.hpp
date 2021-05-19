@@ -10,7 +10,7 @@
 #include "GLbuffer.hpp"
 
 namespace GLrenderer {
-    void render2D(GLbuffer &buff, GLarray &arr, GLshader &shad) {
+    inline void render2D(GLbuffer &buff, GLarray &arr, GLshader &shad) {
         buff.bindBuffer();
         buff.bindEbuffer();
         arr.bind();

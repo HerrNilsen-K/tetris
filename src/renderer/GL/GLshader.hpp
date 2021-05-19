@@ -25,11 +25,11 @@ private:
     uint32_t m_program = 0;
 };
 
-GLshader::GLshader() {
+inline GLshader::GLshader() {
     m_program = glCreateProgram();
 }
 
-std::string GLshader::shader(std::string_view &vert, std::string_view &frag) {
+inline std::string GLshader::shader(std::string_view &vert, std::string_view &frag) {
     size_t vertex = glCreateShader(GL_VERTEX_SHADER), fragment = glCreateShader(GL_FRAGMENT_SHADER);
     GLint success = 0;
 
@@ -72,15 +72,15 @@ std::string GLshader::shader(std::string_view &vert, std::string_view &frag) {
     return std::string();
 }
 
-void GLshader::bind() {
+inline void GLshader::bind() {
     glUseProgram(m_program);
 }
 
-GLshader::~GLshader() {
+inline GLshader::~GLshader() {
     glDeleteProgram(m_program);
 }
 
-void GLshader::uniform(std::string &pos, glm::mat4 &m) {
+inline void GLshader::uniform(std::string &pos, glm::mat4 &m) {
     bind();
     glUniformMatrix4fv(glGetUniformLocation(m_program, pos.c_str()), 1, false, &m[0][0]);
 }

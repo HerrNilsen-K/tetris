@@ -24,24 +24,24 @@ private:
     uint32_t m_array = 0;
 };
 
-GLarray::GLarray() {
+inline GLarray::GLarray() {
     glGenVertexArrays(1, &m_array);
 }
 
-void GLarray::bind() {
+inline void GLarray::bind() {
     glBindVertexArray(m_array);
 }
 
-void GLarray::data(uint32_t start, uint32_t end, uint32_t elements, void *offset) {
+inline void GLarray::data(uint32_t start, uint32_t end, uint32_t elements, void *offset) {
     bind();
     glVertexAttribPointer(start, end, GL_FLOAT, false, elements * sizeof(float), offset);
 }
 
-void GLarray::enable(uint8_t index) {
+inline void GLarray::enable(uint8_t index) {
     glEnableVertexAttribArray(index);
 }
 
-GLarray::~GLarray() {
+inline GLarray::~GLarray() {
     glDeleteVertexArrays(1, &m_array);
     glBindVertexArray(0);
 }

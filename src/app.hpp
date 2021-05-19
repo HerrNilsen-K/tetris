@@ -7,8 +7,7 @@
 
 #include "logic/events.hpp"
 #include "window/window.hpp"
-#include "renderer/GL/GLrenderer.hpp"
-#include "renderer/field.hpp"
+#include "logic/board.hpp"
 #include <chrono>
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>

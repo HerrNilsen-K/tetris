@@ -22,7 +22,7 @@ private:
     GLshader m_pro;
 };
 
-field::field() {
+inline field::field() {
     std::vector<float> vertecies{
             -1, 1, //Bottom Left
             -1, -1, //Bottom Left
@@ -61,11 +61,11 @@ field::field() {
         throw std::runtime_error(programResult);
 }
 
-void field::render() {
+inline void field::render() {
     GLrenderer::render2D(m_buf, m_arr, m_pro);
 }
 
-void field::uniform(std::string &pos, glm::mat4 &m) {
+inline void field::uniform(std::string &pos, glm::mat4 &m) {
     m_pro.uniform(pos, m);
 }
 

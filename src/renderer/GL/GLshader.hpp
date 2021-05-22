@@ -9,6 +9,8 @@
 #include <string_view>
 #include <glm/glm.hpp>
 
+class field;
+
 class GLshader {
 public:
     GLshader();
@@ -21,11 +23,15 @@ public:
 
     void uniform(std::string &pos, glm::mat4 &m);
 
+    void uniform(std::string &pos, float p1, float p2, float p3);
+
     GLshader &operator=(const GLshader &pro);
 
     GLshader &operator=(GLshader &&pro);
 
     ~GLshader();
+
+    friend field;
 
 private:
     uint32_t m_program = 0;
@@ -110,6 +116,10 @@ inline GLshader &GLshader::operator=(GLshader &&pro) {
         pro.m_program = 0;
     }
     return *this;
+}
+
+inline void GLshader::uniform(std::string &pos, float p1, float p2, float p3) {
+    glUniform3f(glGetUniformLocation(m_program, pos.c_str()), p1, p2, p3);
 }
 
 #endif //TETRIS_GLSHADER_HPP

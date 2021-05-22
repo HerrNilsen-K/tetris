@@ -5,7 +5,14 @@
 #include <iostream>
 #include "board.hpp"
 
-board::board() = default;
+board::board() {
+    for (auto &i : m_board) {
+        for (auto &j : i) {
+            static std::string pos = "color";
+            j.second.uniform(pos, colorMap[color::NONE]);
+        }
+    }
+};
 
 void board::render() {
     for (auto &i : m_board) {

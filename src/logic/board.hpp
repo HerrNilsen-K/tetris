@@ -7,6 +7,7 @@
 
 #include <array>
 #include <memory>
+#include <map>
 #include "../renderer/field.hpp"
 
 enum class color {
@@ -26,6 +27,18 @@ struct fieldColor {
     fieldColor(color color = color::NONE) : c(color) {
 
     }
+};
+
+//TODO Adjust colors
+static std::map<color, glm::vec3> colorMap = {
+        std::make_pair(color::CYAN, glm::vec3(1, 1, 1)),
+        std::make_pair(color::YELLOW, glm::vec3(1, 1, 1)),
+        std::make_pair(color::PURPLE, glm::vec3(1, 1, 1)),
+        std::make_pair(color::GREEN, glm::vec3(1, 1, 1)),
+        std::make_pair(color::RED, glm::vec3(1, 0, 0)),
+        std::make_pair(color::BLUE, glm::vec3(1, 1, 1)),
+        std::make_pair(color::ORANGE, glm::vec3(1, 1, 1)),
+        std::make_pair(color::NONE, glm::vec3(0, 0, 0))
 };
 
 class board {

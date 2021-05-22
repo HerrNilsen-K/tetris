@@ -20,6 +20,10 @@ public:
 
     void uniform(std::string &pos, glm::mat4 &m);
 
+    void uniform(std::string &pos, glm::vec3 vec);
+
+    void uniform(std::string &pos, float p1, float p2, float p3);
+
     field &operator=(const field &f);
 
     field &operator=(field &&f);
@@ -50,9 +54,10 @@ inline field::field() {
             fragment{
             "#version 330 core\n"
             "out vec4 FragColor;\n"
+            "uniform vec3 color;\n"
             "void main()\n"
             "{\n"
-            "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+            "   FragColor = vec4(color, 1.0f);\n"
             "}\n"
     };
     std::string_view vertex{
@@ -112,6 +117,14 @@ inline field &field::operator=(field &&f) {
         this->m_pro = std::move(f.m_pro);
     }
     return *this;
+}
+
+inline void field::uniform(std::string &pos, float p1, float p2, float p3) {
+    m_pro.uniform(pos, p1, p2, p3);
+}
+
+inline void field::uniform(std::string &pos, glm::vec3 vec) {
+    uniform(pos, vec[0], vec[1], vec[2]);
 }
 
 

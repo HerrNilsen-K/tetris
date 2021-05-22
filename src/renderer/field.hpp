@@ -12,15 +12,27 @@ class field {
 public:
     field();
 
+    field(const field &f);
+
+    field(field &&f);
+
     void render();
 
     void uniform(std::string &pos, glm::mat4 &m);
+
+    field &operator=(const field &f);
+
+    field &operator=(field &&f);
 
 private:
     GLbuffer m_buf;
     GLarray m_arr;
     GLshader m_pro;
 };
+
+inline field genField() {
+    return field();
+}
 
 inline field::field() {
     std::vector<float> vertecies{
@@ -59,6 +71,9 @@ inline field::field() {
     std::string programResult = m_pro.shader(vertex, fragment);
     if (!programResult.empty())
         throw std::runtime_error(programResult);
+    glm::mat4 mat(1.f);
+    std::string pos = "aMat";
+    m_pro.uniform(pos, mat);
 }
 
 inline void field::render() {
@@ -67,6 +82,36 @@ inline void field::render() {
 
 inline void field::uniform(std::string &pos, glm::mat4 &m) {
     m_pro.uniform(pos, m);
+}
+
+inline field &field::operator=(const field &f) {
+    this->m_buf = f.m_buf;
+    this->m_arr = f.m_arr;
+    this->m_pro = f.m_pro;
+    return *this;
+}
+
+inline field::field(const field &f) {
+    this->m_buf = f.m_buf;
+    this->m_arr = f.m_arr;
+    this->m_pro = f.m_pro;
+}
+
+inline field::field(field &&f) {
+    if (this != &f) {
+        this->m_buf = std::move(f.m_buf);
+        this->m_arr = std::move(f.m_arr);
+        this->m_pro = std::move(f.m_pro);
+    }
+}
+
+inline field &field::operator=(field &&f) {
+    if (this != &f) {
+        this->m_buf = std::move(f.m_buf);
+        this->m_arr = std::move(f.m_arr);
+        this->m_pro = std::move(f.m_pro);
+    }
+    return *this;
 }
 
 

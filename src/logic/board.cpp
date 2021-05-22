@@ -5,6 +5,12 @@
 #include <iostream>
 #include "board.hpp"
 
-board::board() {
-    std::cout << (int)m_board[0][0].first.c;
+board::board() = default;
+
+void board::render() {
+    for (auto &i : m_board) {
+        for (auto &j : i) {
+            j.second.render();
+        }
+    }
 }

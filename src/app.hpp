@@ -114,8 +114,8 @@ void APIENTRY glDebugOutput(GLenum source,
 bool app::run() {
     if (!init())
         return false;
-    if (glewInit() != GLEW_OK)
-        throw std::runtime_error("GLEW cannot be initialized");
+    if (GLenum err = glewInit(); err != GLEW_OK)
+        throw std::runtime_error(reinterpret_cast<const char *>(glewGetErrorString(err)));
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(glDebugOutput, nullptr);
     return appLoop();
@@ -131,20 +131,13 @@ bool app::appLoop() {
     auto oldTime = std::chrono::system_clock::now();
     auto currentTime = std::chrono::system_clock::now();
 
-    glm::mat4 rot(1.0f);
-    rot = glm::scale(rot, glm::vec3(0.5, 0.5, 0.5));
-    glm::mat4 trans;
-    trans = glm::translate(rot, glm::vec3(-1, 0, 0));
-    std::string pos = "aMat";
-    glm::mat4 mat = trans * rot ;
-
-    field m_field;
-    m_field.uniform(pos, mat);
+    board b;
+    //field b;
     while (m_win.run()) {
         m_win.swapBuffers();
         m_win.pollEvents();
         glClear(GL_COLOR_BUFFER_BIT);
-        m_field.render();
+        b.render();
         oldTime = currentTime;
         currentTime = std::chrono::system_clock::now();
         deltaTime = std::chrono::duration<double, std::milli>(currentTime - oldTime).count();

@@ -13,11 +13,17 @@ class GLshader {
 public:
     GLshader();
 
+    GLshader(const GLshader &pro);
+
     std::string shader(std::string_view &vert, std::string_view &frag);
 
     void bind();
 
     void uniform(std::string &pos, glm::mat4 &m);
+
+    GLshader &operator=(const GLshader &pro);
+
+    GLshader &operator=(GLshader &&pro);
 
     ~GLshader();
 
@@ -74,15 +80,36 @@ inline std::string GLshader::shader(std::string_view &vert, std::string_view &fr
 
 inline void GLshader::bind() {
     glUseProgram(m_program);
+    //if (glIsProgram(m_program))
+    //    throw std::runtime_error("Program is not valid!");
 }
 
 inline GLshader::~GLshader() {
-    glDeleteProgram(m_program);
+    if (m_program != 0)
+        glDeleteProgram(m_program);
 }
 
 inline void GLshader::uniform(std::string &pos, glm::mat4 &m) {
     bind();
     glUniformMatrix4fv(glGetUniformLocation(m_program, pos.c_str()), 1, false, &m[0][0]);
+}
+
+inline GLshader::GLshader(const GLshader &pro) {
+    m_program = pro.m_program;
+}
+
+inline GLshader &GLshader::operator=(const GLshader &pro) {
+    this->m_program = pro.m_program;
+    return *this;
+}
+
+inline GLshader &GLshader::operator=(GLshader &&pro) {
+    if (this != &pro) {
+        this->m_program = pro.m_program;
+
+        pro.m_program = 0;
+    }
+    return *this;
 }
 
 #endif //TETRIS_GLSHADER_HPP

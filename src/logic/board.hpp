@@ -6,6 +6,7 @@
 #define TETRIS_BOARD_HPP
 
 #include <array>
+#include <memory>
 #include "../renderer/field.hpp"
 
 enum class color {
@@ -22,22 +23,22 @@ enum class color {
 struct fieldColor {
     color c;
 
-    fieldColor(color color) : c(color) {
+    fieldColor(color color = color::NONE) : c(color) {
 
     }
 };
 
 class board {
 private:
-    struct fieldPair : std::pair<fieldColor, field> {
-        fieldPair() : std::pair<fieldColor, field>(color::NONE, field()) {}
-    };
+    using fieldPair = std::pair<fieldColor, field>;
 
 public:
     board();
 
+    void render();
+
 private:
-    std::array<std::array<fieldPair, 10>, 20> m_board {};
+    std::array<std::array<fieldPair , 20>, 10> m_board;
 };
 
 

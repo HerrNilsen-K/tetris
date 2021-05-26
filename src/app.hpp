@@ -8,6 +8,7 @@
 #include "logic/events.hpp"
 #include "window/window.hpp"
 #include "logic/board.hpp"
+#include "constants.hpp"
 #include <chrono>
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
@@ -136,6 +137,7 @@ bool app::appLoop() {
     while (m_win.run()) {
         m_win.swapBuffers();
         m_win.pollEvents();
+        m_win.setViewport();
         glClear(GL_COLOR_BUFFER_BIT);
         b.render();
         oldTime = currentTime;
@@ -170,7 +172,8 @@ bool app::appLoop() {
 bool app::init() {
     if (!glfwInit())
         return false;
-    windowAttributes winAtt{200, 400, 0, 0, "TETRIS"};
+    //TODO Make window unresizable
+    windowAttributes winAtt{constants::WINDOW_WIDTH, constants::WINDOW_HEIGHT, 0, 0, "TETRIS"};
     m_win.windowAttributes(winAtt);
     m_win.createWindow();
     return true;

@@ -6,6 +6,7 @@
 #define TETRIS_FIELD_HPP
 
 #include "GL/GLrenderer.hpp"
+#include "../constants.hpp"
 #include <stdexcept>
 
 class field {
@@ -40,10 +41,16 @@ inline field genField() {
 
 inline field::field() {
     std::vector<float> vertecies{
-            -1, 1, //Bottom Left
-            -1, -1, //Bottom Left
-            1, 1, //Top Right
-            1, -1 //Bottom Right
+                -1, 1, //Top Left
+                -1, -1, //Bottom Left
+                1, 1, //Top Right
+                1, -1 //Bottom Right
+            /*
+            0, constants::WINDOW_WIDTH,
+            0, 0,
+            constants::WINDOW_WIDTH, constants::WINDOW_WIDTH,
+            constants::WINDOW_WIDTH, 0
+             */
     };
     std::vector<unsigned> indicies{
             0, 1, 2,
@@ -62,11 +69,11 @@ inline field::field() {
     };
     std::string_view vertex{
             "#version 330 core\n"
-            "layout (location = 0) in vec3 aPos;\n"
+            "layout (location = 0) in vec2 aPos;\n"
             "uniform mat4 aMat;\n"
             "void main()\n"
             "{\n"
-            "   gl_Position =  aMat * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+            "   gl_Position =  aMat * vec4(aPos, 0, 1.0);\n"
             "}\n"
     };
     m_buf.data(vertecies, indicies);

@@ -51,7 +51,7 @@ public:
     void render();
 
 private:
-    std::array<std::array<fieldPair , 20>, 10> m_board;
+    std::array<std::array<fieldPair , 10>, 20> m_board;
 };
 
 

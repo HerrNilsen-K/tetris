@@ -50,6 +50,8 @@ public:
 
     void render();
 
+    void setColor(size_t x, size_t y, color c);
+
 private:
     std::array<std::array<fieldPair , 10>, 20> m_board;
 };

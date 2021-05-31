@@ -13,9 +13,7 @@ board::board() {
     for (float y = 0; auto &i : m_board) {
         for (float x = 0; auto &j : i) {
             static std::string col = "color", pos = "aMat";
-            //TODO Turn color to NONE
-            //It's red for debugging
-            j.second.uniform(col, colorMap[color::RED]);
+            j.second.uniform(col, colorMap[color::NONE]);
             glm::mat4 trans(1.f), scale(1.f);
 
             trans = glm::translate(trans, glm::vec3(x + constants::FIELD_SIZE, y + constants::FIELD_SIZE, 1));
@@ -33,7 +31,14 @@ board::board() {
 void board::render() {
     for (auto &i : m_board) {
         for (auto &j : i) {
+            std::string col = "color";
+            //j.second.uniform(col, colorMap[j.first.c]);
             j.second.render();
         }
     }
+}
+
+void board::setColor(size_t x, size_t y, color c) {
+    std::string col("color");
+    m_board[x][y].second.uniform(col, colorMap[c]);
 }

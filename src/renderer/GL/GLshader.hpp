@@ -119,6 +119,7 @@ inline GLshader &GLshader::operator=(GLshader &&pro) {
 }
 
 inline void GLshader::uniform(std::string &pos, float p1, float p2, float p3) {
+    bind();
     glUniform3f(glGetUniformLocation(m_program, pos.c_str()), p1, p2, p3);
 }
 

@@ -139,6 +139,7 @@ bool app::appLoop() {
         m_win.pollEvents();
         m_win.setViewport();
         glClear(GL_COLOR_BUFFER_BIT);
+        b.setColor(5, 5, color::ORANGE);
         b.render();
         oldTime = currentTime;
         currentTime = std::chrono::system_clock::now();

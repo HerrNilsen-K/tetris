@@ -41,4 +41,5 @@ void board::render() {
 void board::setColor(size_t x, size_t y, color c) {
     std::string col("color");
     m_board[x][y].second.uniform(col, colorMap[c]);
+    m_board[x][y].first = c;
 }

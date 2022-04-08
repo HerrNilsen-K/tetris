@@ -32,6 +32,7 @@ void board::render() {
     for (auto &i : m_board) {
         for (auto &j : i) {
             std::string col = "color";
+            //j.first.c = color::NONE;
             //j.second.uniform(col, colorMap[j.first.c]);
             j.second.render();
         }

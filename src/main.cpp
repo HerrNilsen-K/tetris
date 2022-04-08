@@ -11,8 +11,8 @@ int main() {
      * Create Window
      * initialize the board
      * start game loop
-     *      spawn piece
-     *      let piece drop/transform it
+     *      spawn tetronomio
+     *      let tetronomio drop/transform it
      *      end when game over
      */
 

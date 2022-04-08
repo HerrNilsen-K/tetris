@@ -9,6 +9,8 @@
 #include "window/window.hpp"
 #include "logic/board.hpp"
 #include "constants.hpp"
+#include "logic/pieces.hpp"
+#include "logic/randomGenerator.hpp"
 #include <chrono>
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
@@ -133,28 +135,41 @@ bool app::appLoop() {
     auto currentTime = std::chrono::system_clock::now();
 
     board b;
-    //field b;
     while (m_win.run()) {
         m_win.swapBuffers();
         m_win.pollEvents();
         m_win.setViewport();
         glClear(GL_COLOR_BUFFER_BIT);
-        b.render();
         oldTime = currentTime;
         currentTime = std::chrono::system_clock::now();
         deltaTime = std::chrono::duration<double, std::milli>(currentTime - oldTime).count();
         std::cout << "FPS: " << 1000 / deltaTime << std::endl;
+
+        tetronomio currentTetronomio(
+                pieceType::I,
+                pieceRotation::R0,
+                glm::vec2(0, 0));
+
+
+
         //Event handler
         switch (currentEvent) {
             case events::CLOSE:
                 appIsRunning = false;
             case CHOOSE_PIECE:
-                //selectPiece();
+                //Choose random piece in range of piecType
+                currentTetronomio.type = static_cast<pieceType>(
+                        generate::random(static_cast<int>(pieceType::BEGIN),
+                                         static_cast<int>(pieceType::END)));
+                currentEvent = events::PIECE_FALLING;
                 break;
             case PIECE_FALLING:
                 /*
                  * fall(input);
-                 * checkCollision();
+                 * bool hit = hitGround();
+                 * if (hit) {
+                 *  currentEvent = events::CHOOSE_PIECE;
+                 * }
                  */
                 break;
             default:
@@ -162,8 +177,7 @@ bool app::appLoop() {
                 appIsRunning = false;
                 break;
         }
-        //render();
-        //Pull event
+        b.render();
     }
 
     return appIsOk;

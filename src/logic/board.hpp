@@ -52,6 +52,8 @@ public:
 
     void setColor(size_t x, size_t y, color c);
 
+    //TODO Implement add tetromino function
+
 private:
     std::array<std::array<fieldPair , 10>, 20> m_board;
 };

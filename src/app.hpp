@@ -22,8 +22,15 @@ private:
 
     bool init();
 
+    void getNextTetronomio(tetronomio &currentTetronomio, events &currentEvent) const;
+
+    void update(const tetronomio &currentTetronomio, events &currentEvent, double deltaTime);
+
+    static void staticKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+    void keyCallback(int key, int scancode, int action, int mods);
 
     events currentEvent;
+    int currentKey = 0;
     window m_win;
 
 public:
@@ -119,8 +126,13 @@ bool app::run() {
         return false;
     if (GLenum err = glewInit(); err != GLEW_OK)
         throw std::runtime_error(reinterpret_cast<const char *>(glewGetErrorString(err)));
+
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(glDebugOutput, nullptr);
+
+    glfwSetWindowUserPointer(m_win.getWindow(), this);
+    glfwSetKeyCallback(m_win.getWindow(), staticKeyCallback);
+
     return appLoop();
 }
 
@@ -143,7 +155,7 @@ bool app::appLoop() {
         oldTime = currentTime;
         currentTime = std::chrono::system_clock::now();
         deltaTime = std::chrono::duration<double, std::milli>(currentTime - oldTime).count();
-        std::cout << "FPS: " << 1000 / deltaTime << std::endl;
+        //std::cout << "FPS: " << 1000 / deltaTime << std::endl;
 
         tetronomio currentTetronomio(
                 pieceType::I,
@@ -158,19 +170,11 @@ bool app::appLoop() {
                 appIsRunning = false;
             case CHOOSE_PIECE:
                 //Choose random piece in range of piecType
-                currentTetronomio.type = static_cast<pieceType>(
-                        generate::random(static_cast<int>(pieceType::BEGIN),
-                                         static_cast<int>(pieceType::END)));
-                currentEvent = events::PIECE_FALLING;
+                getNextTetronomio(currentTetronomio, currentEvent);
                 break;
             case PIECE_FALLING:
-                /*
-                 * fall(input);
-                 * bool hit = hitGround();
-                 * if (hit) {
-                 *  currentEvent = events::CHOOSE_PIECE;
-                 * }
-                 */
+                update(currentTetronomio, currentEvent, deltaTime);
+
                 break;
             default:
                 appIsOk = false;
@@ -183,6 +187,12 @@ bool app::appLoop() {
     return appIsOk;
 }
 
+void app::getNextTetronomio(tetronomio &currentTetronomio, events &currentEvent) const {
+    currentTetronomio.type = static_cast<pieceType>(
+            generate::random(static_cast<int>(pieceType::BEGIN),
+                             static_cast<int>(pieceType::END)));
+}
+
 bool app::init() {
     if (!glfwInit())
         return false;
@@ -191,6 +201,30 @@ bool app::init() {
     m_win.windowAttributes(winAtt);
     m_win.createWindow();
     return true;
+}
+
+void app::update(const tetronomio &currentTetronomio, events &currentEvent, double deltaTime) {
+    /*
+     * TODO: make the piece fall
+     * TODO: Check if piece has hit the ground
+     */
+    /*
+    board.fall(inp);
+    bool hit = board.hitGround();
+    //TODO implement collision detection
+    if (hit) {
+        currentEvent = events::CHOOSE_PIECE;
+    */
+
+    }
+
+void app::keyCallback(int key, int scancode, int action, int mods) {
+    currentKey = key;
+}
+
+void app::staticKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+    app *app = reinterpret_cast<class app *>(glfwGetWindowUserPointer(window));
+    app->keyCallback(key, scancode, action, mods);
 }
 
 #endif //TETRIS_APP_HPP

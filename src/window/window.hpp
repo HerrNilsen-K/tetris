@@ -52,6 +52,8 @@ public:
     void pollEvents();
 
     void setViewport();
+
+    GLFWwindow *getWindow();
 };
 
 void window::createWindow() {
@@ -98,6 +100,10 @@ void window::setViewport() {
     int x, y;
     glfwGetWindowSize(m_win.get(), &x, &y);
     glViewport(0, 0, x, y);
+}
+
+GLFWwindow *window::getWindow() {
+    return m_win.get();
 }
 
 #endif //TETRIS_WINDOW_HPP

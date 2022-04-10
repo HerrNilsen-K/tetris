@@ -186,7 +186,7 @@ bool app::appLoop() {
 bool app::init() {
     if (!glfwInit())
         return false;
-    //TODO Make window unresizable
+    //TODO Make window non-resizable
     windowAttributes winAtt{constants::WINDOW_WIDTH, constants::WINDOW_HEIGHT, 0, 0, "TETRIS"};
     m_win.windowAttributes(winAtt);
     m_win.createWindow();

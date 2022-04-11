@@ -137,7 +137,6 @@ bool app::run() {
 }
 
 bool app::appLoop() {
-    //TODO Remove this
     currentEvent = events::CHOOSE_PIECE;
     bool appIsRunning = true, appIsOk = true;
 

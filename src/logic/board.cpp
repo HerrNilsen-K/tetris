@@ -32,8 +32,7 @@ void board::render() {
     for (auto &i : m_board) {
         for (auto &j : i) {
             std::string col = "color";
-            //j.first.c = color::NONE;
-            //j.second.uniform(col, colorMap[j.first.c]);
+            j.second.uniform(col, colorMap[j.first.c]);
             j.second.render();
         }
     }
@@ -43,4 +42,8 @@ void board::setColor(size_t x, size_t y, color c) {
     std::string col("color");
     m_board[x][y].second.uniform(col, colorMap[c]);
     m_board[x][y].first = c;
+}
+
+void board::renderPiece(const tetronomio &tetronomio) {
+    m_board[tetronomio.position.x][tetronomio.position.y].first = color::RED;
 }

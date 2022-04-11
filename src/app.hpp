@@ -24,7 +24,7 @@ private:
 
     void getNextTetronomio(tetronomio &currentTetronomio, events &currentEvent) const;
 
-    void update(const tetronomio &currentTetronomio, events &currentEvent, double deltaTime);
+    void update(const tetronomio &currentTetronomio, events &currentEvent, double deltaTime, board &b);
 
     static void staticKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
     void keyCallback(int key, int scancode, int action, int mods);
@@ -172,7 +172,7 @@ bool app::appLoop() {
                 getNextTetronomio(currentTetronomio, currentEvent);
                 break;
             case PIECE_FALLING:
-                update(currentTetronomio, currentEvent, deltaTime);
+                update(currentTetronomio, currentEvent, deltaTime, b);
 
                 break;
             default:
@@ -190,6 +190,7 @@ void app::getNextTetronomio(tetronomio &currentTetronomio, events &currentEvent)
     currentTetronomio.type = static_cast<pieceType>(
             generate::random(static_cast<int>(pieceType::BEGIN),
                              static_cast<int>(pieceType::END)));
+    currentEvent = events::PIECE_FALLING;
 }
 
 bool app::init() {
@@ -202,11 +203,19 @@ bool app::init() {
     return true;
 }
 
-void app::update(const tetronomio &currentTetronomio, events &currentEvent, double deltaTime) {
+void app::update(const tetronomio &currentTetronomio, events &currentEvent, double deltaTime, board &b) {
     /*
      * TODO: make the piece fall
      * TODO: Check if piece has hit the ground
+     * TODO: Send piece to the board
+     *
+     * Render logic
+     * 1. Send current piece to the board
+     * 2. Let it render
+     * 3. If hit ground, send statically to the board
+     *
      */
+    b.renderPiece(currentTetronomio);
     /*
     board.fall(inp);
     bool hit = board.hitGround();

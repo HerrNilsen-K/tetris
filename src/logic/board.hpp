@@ -9,6 +9,7 @@
 #include <memory>
 #include <map>
 #include "../renderer/field.hpp"
+#include "pieces.hpp"
 
 enum class color {
     CYAN,
@@ -53,6 +54,8 @@ public:
     void setColor(size_t x, size_t y, color c);
 
     //TODO Implement add tetromino function
+
+    void renderPiece(const tetronomio &tetronomio);
 
 private:
     std::array<std::array<fieldPair , 10>, 20> m_board;

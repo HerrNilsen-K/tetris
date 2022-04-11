@@ -24,7 +24,7 @@ private:
 
     void getNextTetronomio(tetronomio &currentTetronomio, events &currentEvent) const;
 
-    void update(const tetronomio &currentTetronomio, events &currentEvent, double deltaTime, board &b);
+    void update(tetronomio &currentTetronomio, events &currentEvent, double deltaTime, board &b);
 
     static void staticKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
     void keyCallback(int key, int scancode, int action, int mods);
@@ -145,6 +145,11 @@ bool app::appLoop() {
     auto oldTime = std::chrono::system_clock::now();
     auto currentTime = std::chrono::system_clock::now();
 
+    tetronomio currentTetronomio(
+            pieceType::I,
+            pieceRotation::R0,
+            glm::vec2(0, 0));
+
     board b;
     while (m_win.run()) {
         m_win.swapBuffers();
@@ -155,11 +160,6 @@ bool app::appLoop() {
         currentTime = std::chrono::system_clock::now();
         deltaTime = std::chrono::duration<double, std::milli>(currentTime - oldTime).count();
         //std::cout << "FPS: " << 1000 / deltaTime << std::endl;
-
-        tetronomio currentTetronomio(
-                pieceType::I,
-                pieceRotation::R0,
-                glm::vec2(0, 0));
 
 
 
@@ -203,7 +203,7 @@ bool app::init() {
     return true;
 }
 
-void app::update(const tetronomio &currentTetronomio, events &currentEvent, double deltaTime, board &b) {
+void app::update(tetronomio &currentTetronomio, events &currentEvent, double deltaTime, board &b) {
     /*
      * TODO: make the piece fall
      * TODO: Check if piece has hit the ground
@@ -215,7 +215,21 @@ void app::update(const tetronomio &currentTetronomio, events &currentEvent, doub
      * 3. If hit ground, send statically to the board
      *
      */
-    b.renderPiece(currentTetronomio);
+
+
+    if(currentKey == GLFW_KEY_A) {
+        currentTetronomio.position.x -= 1;
+        currentKey = 0;
+    }
+
+    if(currentKey == GLFW_KEY_D) {
+        currentTetronomio.position.x += 1;
+        currentKey = 0;
+    }
+
+
+    b.addPieceToRenderer(currentTetronomio);
+
     /*
     board.fall(inp);
     bool hit = board.hitGround();
@@ -227,7 +241,9 @@ void app::update(const tetronomio &currentTetronomio, events &currentEvent, doub
     }
 
 void app::keyCallback(int key, int scancode, int action, int mods) {
-    currentKey = key;
+    if(action == GLFW_PRESS) {
+        currentKey = key;
+    }
 }
 
 void app::staticKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {

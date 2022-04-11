@@ -55,7 +55,7 @@ public:
 
     //TODO Implement add tetromino function
 
-    void renderPiece(const tetronomio &tetronomio);
+    void addPieceToRenderer(const tetronomio &tetronomio);
 
 private:
     std::array<std::array<fieldPair , 10>, 20> m_board;

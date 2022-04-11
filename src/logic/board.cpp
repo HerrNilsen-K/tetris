@@ -10,8 +10,8 @@
 board::board() {
     glm::mat4 ort(1.f);
     ort = glm::ortho(0.f, (float) constants::WINDOW_WIDTH, 0.f, (float) constants::WINDOW_HEIGHT);
-    for (float y = 0; auto &i : m_board) {
-        for (float x = 0; auto &j : i) {
+    for (float y = 0; auto &i: m_board) {
+        for (float x = 0; auto &j: i) {
             static std::string col = "color", pos = "aMat";
             j.second.uniform(col, colorMap[color::NONE]);
             glm::mat4 trans(1.f), scale(1.f);
@@ -29,8 +29,8 @@ board::board() {
 };
 
 void board::render() {
-    for (auto &i : m_board) {
-        for (auto &j : i) {
+    for (auto &i: m_board) {
+        for (auto &j: i) {
             std::string col = "color";
             j.second.uniform(col, colorMap[j.first.c]);
             j.second.render();
@@ -44,6 +44,12 @@ void board::setColor(size_t x, size_t y, color c) {
     m_board[x][y].first = c;
 }
 
-void board::renderPiece(const tetronomio &tetronomio) {
-    m_board[tetronomio.position.x][tetronomio.position.y].first = color::RED;
+void board::addPieceToRenderer(const tetronomio &tetronomio) {
+    //TODO add id to each piece
+    m_board
+    [static_cast<size_t>(tetronomio.position.x)]
+    [static_cast<size_t>(tetronomio.position.y)].first = color::RED;
+    if(tetronomio.position.x > 0) {
+        std::cout << tetronomio.position.x << " " << tetronomio.position.y << std::endl;
+    }
 }

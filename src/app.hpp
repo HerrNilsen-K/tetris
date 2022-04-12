@@ -231,11 +231,17 @@ void app::update(tetronomio &currentTetronomio, events &currentEvent, double del
 
     //TODO: Adjust speed to current level
     static double posHolder = 0;
-    posHolder -= 1.f / 1000 * deltaTime;
-    std::cout << posHolder << std::endl;
+    posHolder -= 5.f / 1000 * deltaTime;
     if(posHolder <= -1) {
         currentTetronomio.position.y -= 1;
         posHolder = 0;
+    }
+
+    //Check if piece has hit the ground
+    if(currentTetronomio.position.y < 0) {
+        currentTetronomio.position.y = 0;
+        std::cout << "HIT THE GROUND" << std::endl;
+        currentEvent = events::CHOOSE_PIECE;
     }
 
     b.addPieceToRenderer(currentTetronomio);

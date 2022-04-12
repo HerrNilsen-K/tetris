@@ -46,10 +46,13 @@ void board::setColor(size_t x, size_t y, color c) {
 
 void board::addPieceToRenderer(const tetronomio &tetronomio) {
     //TODO add id to each piece
+    for(auto &i : m_board) {
+        for(auto &j : i) {
+            j.first = color::NONE;
+        }
+    }
+
     m_board
     [static_cast<size_t>(tetronomio.position.y)]
     [static_cast<size_t>(tetronomio.position.x)].first = color::RED;
-    if(tetronomio.position.x > 0) {
-        std::cout << tetronomio.position.x << " " << tetronomio.position.y << std::endl;
-    }
 }

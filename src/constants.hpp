@@ -9,6 +9,7 @@ namespace constants {
     inline extern const int WINDOW_WIDTH = 400;
     inline extern const int WINDOW_HEIGHT = 800;
     inline extern const int FIELD_SIZE = 15;
+    inline extern const int BLOCKS_PER_ROW = 10;
 }
 
 #endif //TETRIS_CONSTANTS_HPP

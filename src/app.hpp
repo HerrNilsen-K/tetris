@@ -148,7 +148,7 @@ bool app::appLoop() {
     tetronomio currentTetronomio(
             pieceType::I,
             pieceRotation::R0,
-            glm::vec2(0, 0));
+            glm::vec2(5, 19));
 
     board b;
     while (m_win.run()) {
@@ -168,7 +168,7 @@ bool app::appLoop() {
             case events::CLOSE:
                 appIsRunning = false;
             case CHOOSE_PIECE:
-                //Choose random piece in range of piecType
+                //Choose random piece in range of pieceType
                 getNextTetronomio(currentTetronomio, currentEvent);
                 break;
             case PIECE_FALLING:
@@ -190,6 +190,8 @@ void app::getNextTetronomio(tetronomio &currentTetronomio, events &currentEvent)
     currentTetronomio.type = static_cast<pieceType>(
             generate::random(static_cast<int>(pieceType::BEGIN),
                              static_cast<int>(pieceType::END)));
+    currentTetronomio.rotation =pieceRotation::R0;
+    currentTetronomio.position = glm::vec2(5, 19);
     currentEvent = events::PIECE_FALLING;
 }
 
@@ -217,16 +219,24 @@ void app::update(tetronomio &currentTetronomio, events &currentEvent, double del
      */
 
 
-    if(currentKey == GLFW_KEY_A) {
+    if(currentKey == GLFW_KEY_A && currentTetronomio.position.x > 0) {
         currentTetronomio.position.x -= 1;
         currentKey = 0;
     }
 
-    if(currentKey == GLFW_KEY_D) {
+    if(currentKey == GLFW_KEY_D && currentTetronomio.position.x < constants::BLOCKS_PER_ROW - 1) {
         currentTetronomio.position.x += 1;
         currentKey = 0;
     }
 
+    //TODO: Adjust speed to current level
+    static double posHolder = 0;
+    posHolder -= 1.f / 1000 * deltaTime;
+    std::cout << posHolder << std::endl;
+    if(posHolder <= -1) {
+        currentTetronomio.position.y -= 1;
+        posHolder = 0;
+    }
 
     b.addPieceToRenderer(currentTetronomio);
 

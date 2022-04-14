@@ -242,6 +242,8 @@ void app::update(tetronomio &currentTetronomio, events &currentEvent, double del
         currentTetronomio.position.y = 0;
         std::cout << "HIT THE GROUND" << std::endl;
         currentEvent = events::CHOOSE_PIECE;
+        b.addPieceStaticly(currentTetronomio);
+        return;
     }
 
     b.addPieceToRenderer(currentTetronomio);

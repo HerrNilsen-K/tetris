@@ -32,26 +32,36 @@ void board::render() {
     for (auto &i: m_board) {
         for (auto &j: i) {
             std::string col = "color";
+            if (j.first.c == color::NONE) {
+                continue;
+            }
             j.second.uniform(col, colorMap[j.first.c]);
             j.second.render();
         }
     }
 }
 
-void board::setColor(size_t x, size_t y, color c) {
+[[maybe_unused]] void board::setColor(size_t x, size_t y, color c) {
     std::string col("color");
     m_board[x][y].second.uniform(col, colorMap[c]);
     m_board[x][y].first = c;
 }
 
 void board::addPieceToRenderer(const tetronomio &tetronomio) {
-    //TODO add id to each piece
-    for(auto &i : m_board) {
-        for(auto &j : i) {
-            j.first = color::NONE;
-        }
-    }
+    //TODO: Change color according to tetronomio
+    auto &b = m_board
+    [static_cast<size_t>(tetronomio.position.y)]
+    [static_cast<size_t>(tetronomio.position.x)];
 
+    b.first = color::RED;
+    std::string col("color");
+    b.second.uniform(col, colorMap[color::RED]);
+    b.second.render();
+    b.first = color::NONE;
+}
+
+void board::addPieceStaticly(tetronomio &tetronomio) {
+    //TODO: Change color according to tetronomio
     m_board
     [static_cast<size_t>(tetronomio.position.y)]
     [static_cast<size_t>(tetronomio.position.x)].first = color::RED;

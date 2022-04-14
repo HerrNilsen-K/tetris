@@ -51,11 +51,13 @@ public:
 
     void render();
 
-    void setColor(size_t x, size_t y, color c);
+    [[maybe_unused]] void setColor(size_t x, size_t y, color c);
 
     //TODO Implement add tetromino function
 
     void addPieceToRenderer(const tetronomio &tetronomio);
+
+    void addPieceStaticly(tetronomio &tetronomio);
 
 private:
     std::array<std::array<fieldPair , 10>, 20> m_board;

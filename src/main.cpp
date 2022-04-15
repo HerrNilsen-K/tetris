@@ -7,16 +7,7 @@
 #include "app.hpp"
 
 int main() {
-    /*
-     * Create Window
-     * initialize the board
-     * start game loop
-     *      spawn tetronomio
-     *      let tetronomio drop/transform it
-     *      end when game over
-     */
-
     app game{};
-    game.run();
+    return game.run();
     return 0;
 }

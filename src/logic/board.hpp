@@ -61,6 +61,8 @@ public:
 
 private:
     std::array<std::array<fieldPair , 10>, 20> m_board;
+
+    std::vector<glm::vec4> calculatePiecePositions(tetronomio &tetronomio);
 };
 
 
